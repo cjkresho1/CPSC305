@@ -90,6 +90,10 @@ void dump_memory(int start_address, int num_bytes) {
  */
 void load_memory(char *filename) {
     FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("File at %s does not exist\n", filename);
+        return;
+    }
     int address;
     fscanf(fp, "%x", &address);
     int mem_value;

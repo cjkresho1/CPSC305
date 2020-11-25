@@ -1,0 +1,24 @@
+# data address 100                   
+.data 100                              
+0xff                      0x100   0x000000ff
+.label x                          
+10                        0x104   0x00000010
+.label feed                          
+feedabee                  0x108   0xfeedabee
+# code following data                          
+.text                              
+mov r5, r7                0x10c   0x21058007 
+ldr r0  x                 0x110   0x11000104
+mov r1, #10               0x114   0x21010010
+cmp r0, r1                0x118   0x41008001
+bne else                  0x11c   0x51020134
+mov r0, #64               0x120   0x21000064
+mov R3, #3                0x124   0x21030003
+add r0, r0, r3            0x128   0x31000003
+str r0, x                 0x12c   0x12000104
+b end                     0x130   0x5100013c
+.label else                       
+ldr r5, feed              0x134   0x11050108
+str r5, x                 0x138   0x12050104
+.label end                         
+b end # loop on self      0x13c   0x5100013c

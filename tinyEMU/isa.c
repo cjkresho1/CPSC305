@@ -71,13 +71,13 @@ char *disassemble(decoded *d) {
 decoded *decode(unsigned int inst) {
   decoded *val = malloc(sizeof(decoded));
   val->opcode = (inst >> 24) & 0xFF;
-  val->rd = (inst >> 18) & 0xFF;
+  val->rd = (inst >> 16) & 0xFF;
   val->rm = (inst >> 8) & 0xFF;
   val->rn = inst & 0xFF;
-  val->flag = (inst >> 14) & 0x1 ;
+  val->flag = (inst >> 15) & 0x1 ;
   val->address = inst & 0xFFFF;
   val->immediate = inst & 0xFFFF;
   val->offset = (inst >> 8) & 0xFF;
-  val->condition = (inst >> 18) & 0xFF;
+  val->condition = (inst >> 16) & 0xFF;
   return val;
 }

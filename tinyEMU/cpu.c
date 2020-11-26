@@ -46,7 +46,55 @@ void step() {
     int pc = registers[PC];
     int inst; 
     system_bus(pc, &inst, READ);
-    printf("You need to implement step().\n");
+    decoded *dInst = decode(inst);
+
+    switch(dInst->opcode) {
+        case LDR:
+            //LDR case
+        break;
+        case STR:
+            //STR case
+        break;
+        case LDX:
+            //LDX case
+        break;
+        case STX:
+            //STX case
+        break;
+        case MOV:
+            //MOV
+        break;
+        case ADD:
+            //ADD
+        break;
+        case SUB:
+            //SUB
+        break;
+        case MUL:
+            //MUL
+        break;
+        case DIV:
+            //DIV
+        break;
+        case AND:
+            //AND
+        break;
+        case ORR:
+            //ORR
+        break;
+        case EOR:
+            //EOR
+        break;
+        case CMP:
+            //CMP
+        break;
+        case B:
+            //B
+        break;
+        default:
+            //Default, shouldn't happen
+        break;
+    }
 }
 
 //Preform n steps

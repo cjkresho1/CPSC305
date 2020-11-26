@@ -69,6 +69,14 @@ char *disassemble(decoded *d) {
 
 
 decoded *decode(unsigned int inst) {
-    printf("You need to implement decode()\n");
-    return NULL;
+  decoded *val = malloc(sizeof(decoded));
+    val->opcode = inst & (0xFF << 24);
+    val->rd = inst & (0xFF << 18);
+    val->rm = inst & (0xFF << 8);
+    val->rn = inst & 0xFF;
+    val->flag = inst & (0x1 << 14);
+    val->address = inst & 0xFFFF;
+    val->immediate = inst & 0xFFFF;
+    val->offset = inst & (0xFF << 8);
+    val->condition = inst & (0xFF << 18);
 }

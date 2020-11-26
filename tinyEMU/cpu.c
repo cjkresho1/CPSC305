@@ -38,6 +38,10 @@ void show_regs() {
     printf("R12: 0x%.8X, R13: 0x%.8X, R14: 0x%.8X, R15: 0x%.8X\n", registers[12], registers[13], registers[14], registers[15]);
 }
 
+/**
+ * Perform one fetch, decode, execute cycle at PC.
+ * If branch, PC = branchAddress, else PC = PC + 4
+ */
 void step() {
     int pc = registers[PC];
     int inst; 
@@ -45,14 +49,17 @@ void step() {
     printf("You need to implement step().\n");
 }
 
+//Preform n steps
 void step_n(int n) {
     printf("You need to implement step_n().\n");
 }
 
+//Step, then show any registers changed
 void step_show_reg() {
     printf("You need to implement step_show_reg().\n");
 }
 
+//Step, then show any registers or memory that have changed
 void step_show_reg_mem() {
     printf("You need to implement step_show_reg_mem().\n");
 }

@@ -77,7 +77,7 @@ decoded *decode(unsigned int inst) {
   val->flag = (inst >> 15) & 0x1 ;
   val->address = inst & 0xFFFF;
   val->immediate = inst & 0xFFFF;
-  val->offset = (inst >> 8) & 0xFF;
+  val->offset = (inst >> 8) & 0xFF; 
   val->condition = (inst >> 16) & 0xFF;
   return val;
 }

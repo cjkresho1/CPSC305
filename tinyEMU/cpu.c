@@ -122,6 +122,39 @@ void step_show_reg() {
 
 //Step, then show any registers or memory that have changed
 void step_show_reg_mem() {
-    printf("You need to implement step_show_reg_mem().\n");
+    int prev_regs[16];
+    int prev_address_val = 0;
+    int cur_address_val = 0;
+    for (int i = 0; i < 16; i++) {
+        prev_regs[i] = registers[i];
+    }
+
+    int pc = registers[PC];
+    int inst; 
+    system_bus(pc, &inst, READ);
+    decoded *dInst = decode(inst);
+    if (dInst->opcode == STR) {
+        system_bus(dInst->address, &prev_address_val, READ);
+    }
+    else if (dInst->opcode == STX) {
+        system_bus(dInst->rn + dInst->offset, &prev_address_val, READ);
+    }
+
+    step();
+
+    for (int i = 0; i < 16; i++) {
+        if (prev_regs[i] != registers[i]) {
+            printf("reg[%i]: before: 0x%.8X, after: 0x%.8X\n", i, prev_regs[i], registers[i]);
+        }
+    }
+
+    if (dInst->opcode == STR) {
+        system_bus(dInst->address, &cur_address_val, READ);
+        printf("addr: 0x%.4X, before: 0x%.8X, after: 0x%.8X\n", dInst->address, prev_address_val, cur_address_val);
+    }
+    else if (dInst->opcode == STX) {
+        system_bus(dInst->rn + dInst->offset, &cur_address_val, READ);
+        printf("addr: 0x%.4X, before: 0x%.8X, after: 0x%.8X\n", dInst->rn + dInst->offset, prev_address_val, cur_address_val);
+    }
 }
 

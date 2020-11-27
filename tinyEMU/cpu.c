@@ -99,7 +99,9 @@ void step() {
 
 //Preform n steps
 void step_n(int n) {
-    printf("You need to implement step_n().\n");
+    for (int i = 0; i < n; i++) {
+        step();
+    }
 }
 
 //Step, then show any registers changed

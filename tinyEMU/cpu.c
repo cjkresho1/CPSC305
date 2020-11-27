@@ -92,7 +92,7 @@ void step() {
             //B
         break;
         default:
-            //Default, shouldn't happen
+            //Default, happens for a non-instruction, do nothing
         break;
     }
 }
@@ -106,7 +106,18 @@ void step_n(int n) {
 
 //Step, then show any registers changed
 void step_show_reg() {
-    printf("You need to implement step_show_reg().\n");
+    int prev_regs[16];
+    for (int i = 0; i < 16; i++) {
+        prev_regs[i] = registers[i];
+    }
+
+    step();
+
+    for (int i = 0; i < 16; i++) {
+        if (prev_regs[i] != registers[i]) {
+            printf("reg[%i]: before: 0x%.8X, after: 0x%.8X\n", i, prev_regs[i], registers[i]);
+        }
+    }
 }
 
 //Step, then show any registers or memory that have changed

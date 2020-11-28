@@ -47,25 +47,25 @@ void step() {
     int inst; 
     system_bus(pc, &inst, READ);
     decoded *dInst = decode(inst);
+    printf("PC: 0x%.8X, inst: 0x%.8X, %s\nCPSR: 0x%.8X\n", registers[PC], inst, disassemble(dInst));
     registers[PC] = registers[PC] + 4;
+    int tempLdr, tempStr, tempLdx, tempStx, tempCmp, tempCpsr;
 
     switch(dInst->opcode) {
         case LDR:
-            int tempLdr;
             system_bus(dInst->address, &tempLdr, READ);
             registers[dInst->rd] = tempLdr;
         break;
         case STR:
-            int tempStr = registers[dInst->rd];
+            tempStr = registers[dInst->rd];
             system_bus(dInst->address, &tempStr, WRITE);
         break;
         case LDX:
-            int tempLdx;
             system_bus(registers[dInst->rn] + dInst->offset, &tempLdx, READ);
             registers[dInst->rd] = tempLdx;
         break;
         case STX:
-            int tempStx = registers[dInst->rd];
+            tempStx = registers[dInst->rd];
             system_bus(registers[dInst->rn] + dInst->offset, &tempStx, WRITE);
         break;
         case MOV:
@@ -98,8 +98,7 @@ void step() {
             registers[dInst->rd] = registers[dInst->rm] ^ registers[dInst->rn];
         break;
         case CMP:
-            int tempCmp;
-            int tempCpsr = 0;
+            tempCpsr = 0;
             if (dInst->flag == 1) {
                 tempCmp = registers[dInst->rd] - registers[dInst->rn];
             }
@@ -164,6 +163,7 @@ void step() {
             printf("Invalid instruction.");
         break;
     }
+    free(dInst);
 }
 
 //Preform n steps

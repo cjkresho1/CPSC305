@@ -53,53 +53,161 @@ void step() {
 
     switch(dInst->opcode) {
         case LDR:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->address > 1023 || dInst->address < 0) {
+                exit(1);
+            }
             system_bus(dInst->address, &tempLdr, READ);
             registers[dInst->rd] = tempLdr;
         break;
         case STR:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->address > 1023 || dInst->address < 0) {
+                exit(1);
+            }
             tempStr = registers[dInst->rd];
             system_bus(dInst->address, &tempStr, WRITE);
         break;
         case LDX:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if ((registers[dInst->rn] + dInst->offset) > 1023 || (registers[dInst->rn] + dInst->offset) < 0) {
+                exit(1);
+            }
             system_bus(registers[dInst->rn] + dInst->offset, &tempLdx, READ);
             registers[dInst->rd] = tempLdx;
         break;
         case STX:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if ((registers[dInst->rn] + dInst->offset) > 1023 || (registers[dInst->rn] + dInst->offset) < 0) {
+                exit(1);
+            }
             tempStx = registers[dInst->rd];
             system_bus(registers[dInst->rn] + dInst->offset, &tempStx, WRITE);
         break;
         case MOV:
             if (dInst->flag == 1) {
+                if (dInst->rd > 15 || dInst->rd < 0) {
+                    exit(1);
+                }
+                if (dInst->rn > 15 || dInst->rn < 0) {
+                    exit(1);
+                }
                 registers[dInst->rd] = registers[dInst->rn];
             }
             else {
+                if (dInst->rd > 15 || dInst->rd < 0) {
+                    exit(1);
+                }
                 registers[dInst->rd] = dInst->immediate;
             }
         break;
         case ADD:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] + registers[dInst->rn];
         break;
         case SUB:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] - registers[dInst->rn];
         break;
         case MUL:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] * registers[dInst->rn];
         break;
         case DIV:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] / registers[dInst->rn];
         break;
         case AND:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] & registers[dInst->rn];
         break;
         case ORR:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] | registers[dInst->rn];
         break;
         case EOR:
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
+            if (dInst->rn > 15 || dInst->rn < 0) {
+                exit(1);
+            }
+            if (dInst->rm > 15 || dInst->rm < 0) {
+                exit(1);
+            }
             registers[dInst->rd] = registers[dInst->rm] ^ registers[dInst->rn];
         break;
         case CMP:
             tempCpsr = 0;
+            if (dInst->rd > 15 || dInst->rd < 0) {
+                exit(1);
+            }
             if (dInst->flag == 1) {
+                if (dInst->rn > 15 || dInst->rn < 0) {
+                    exit(1);
+                }
                 tempCmp = registers[dInst->rd] - registers[dInst->rn];
             }
             else {
@@ -114,6 +222,9 @@ void step() {
             cpsr = (tempCpsr << 28);
         break;
         case B:
+            if (dInst->address > 1023 || dInst->address < 0) {
+                exit(1);
+            }
             if (dInst->condition == 0) {
                 //b
                 registers[PC] = dInst->address;
@@ -160,7 +271,7 @@ void step() {
             }
         break;
         default:
-            printf("Invalid instruction.");
+            exit(1);
         break;
     }
     printf("CPSR: 0x%.8X\n", cpsr);

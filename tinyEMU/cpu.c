@@ -47,7 +47,7 @@ void step() {
     int inst; 
     system_bus(pc, &inst, READ);
     decoded *dInst = decode(inst);
-    printf("PC: 0x%.8X, inst: 0x%.8X, %s\nCPSR: 0x%.8X\n", registers[PC], inst, disassemble(dInst), cpsr);
+    printf("PC: 0x%.8X, inst: 0x%.8X, %s\n", registers[PC], inst, disassemble(dInst));
     registers[PC] = registers[PC] + 4;
     int tempLdr, tempStr, tempLdx, tempStx, tempCmp, tempCpsr;
 
@@ -163,6 +163,7 @@ void step() {
             printf("Invalid instruction.");
         break;
     }
+    printf("CPSR: 0x%.8X\n", cpsr);
     free(dInst);
 }
 

@@ -116,28 +116,48 @@ void step() {
         break;
         case B:
             if (dInst->condition == 0) {
-
+                //b
+                registers[PC] = dInst->address;
             }
             else if (dInst->condition == 1) {
-
+                //beq
+                if ((cpsr >> 28) & 0x4) {
+                    registers[PC] = dInst->address;
+                }
             }
             else if (dInst->condition == 2) {
-
+                //bne
+                if (((cpsr >> 28) & 0x4) == 0) {
+                    registers[PC] = dInst->address;
+                }
             }
             else if (dInst->condition == 3) {
-
+                //ble
+                if (((cpsr >> 28) & 0x4) || (((cpsr >> 28) & 0x1) != ((cpsr >> 28) & 0x2))) {
+                    registers[PC] = dInst->address;
+                }
             }
             else if (dInst->condition == 4) {
-
+                //blt
+                if (((cpsr >> 28) & 0x1) != ((cpsr >> 28) & 0x2)) {
+                    registers[PC] = dInst->address;
+                }
             }
             else if (dInst->condition == 5) {
-
+                //bge
+                if (((cpsr >> 28) & 0x1) == ((cpsr >> 28) & 0x2)) {
+                    registers[PC] = dInst->address;
+                }
             }
             else if (dInst->condition == 6) {
-
+                //bgt
+                if ((((cpsr >> 28) & 0x4) == 0) && (((cpsr >> 28) & 0x1) == ((cpsr >> 28) & 0x2))) {
+                    registers[PC] = dInst->address;
+                }
             }
             else {
-                
+                //bl
+                registers[PC] = dInst->address;
             }
         break;
         default:

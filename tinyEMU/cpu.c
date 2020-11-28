@@ -47,52 +47,101 @@ void step() {
     int inst; 
     system_bus(pc, &inst, READ);
     decoded *dInst = decode(inst);
+    registers[PC] = registers[PC] + 4;
 
     switch(dInst->opcode) {
         case LDR:
-            //LDR case
+            int tempLdr;
+            system_bus(dInst->address, &tempLdr, READ);
+            registers[dInst->rd] = tempLdr;
         break;
         case STR:
-            //STR case
+            int tempStr = registers[dInst->rd];
+            system_bus(dInst->address, &tempStr, WRITE);
         break;
         case LDX:
-            //LDX case
+            int tempLdx;
+            system_bus(registers[dInst->rn] + dInst->offset, &tempLdx, READ);
+            registers[dInst->rd] = tempLdx;
         break;
         case STX:
-            //STX case
+            int tempStx = registers[dInst->rd];
+            system_bus(registers[dInst->rn] + dInst->offset, &tempStx, WRITE);
         break;
         case MOV:
-            //MOV
+            if (dInst->flag == 1) {
+                registers[dInst->rd] = registers[dInst->rn];
+            }
+            else {
+                registers[dInst->rd] = dInst->immediate;
+            }
         break;
         case ADD:
-            //ADD
+            registers[dInst->rd] = registers[dInst->rm] + registers[dInst->rn];
         break;
         case SUB:
-            //SUB
+            registers[dInst->rd] = registers[dInst->rm] - registers[dInst->rn];
         break;
         case MUL:
-            //MUL
+            registers[dInst->rd] = registers[dInst->rm] * registers[dInst->rn];
         break;
         case DIV:
-            //DIV
+            registers[dInst->rd] = registers[dInst->rm] / registers[dInst->rn];
         break;
         case AND:
-            //AND
+            registers[dInst->rd] = registers[dInst->rm] & registers[dInst->rn];
         break;
         case ORR:
-            //ORR
+            registers[dInst->rd] = registers[dInst->rm] | registers[dInst->rn];
         break;
         case EOR:
-            //EOR
+            registers[dInst->rd] = registers[dInst->rm] ^ registers[dInst->rn];
         break;
         case CMP:
-            //CMP
+            int tempCmp;
+            int tempCpsr = 0;
+            if (dInst->flag == 1) {
+                tempCmp = registers[dInst->rd] - registers[dInst->rn];
+            }
+            else {
+                tempCmp = registers[dInst->rd] - dInst->immediate;
+            }
+            if (tempCmp < 0) {
+                tempCpsr += 8;
+            }
+            if (tempCmp == 0) {
+                tempCpsr += 4;
+            }
+            cpsr = (tempCpsr << 28);
         break;
         case B:
-            //B
+            if (dInst->condition == 0) {
+
+            }
+            else if (dInst->condition == 1) {
+
+            }
+            else if (dInst->condition == 2) {
+
+            }
+            else if (dInst->condition == 3) {
+
+            }
+            else if (dInst->condition == 4) {
+
+            }
+            else if (dInst->condition == 5) {
+
+            }
+            else if (dInst->condition == 6) {
+
+            }
+            else {
+                
+            }
         break;
         default:
-            //Default, happens for a non-instruction, do nothing
+            printf("Invalid instruction.");
         break;
     }
 }
